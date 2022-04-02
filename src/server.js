@@ -1,14 +1,12 @@
-const express = require('express');
+import express from "express";
+import 'dotenv/config'
+import { routes } from "./routes";
 
 const app = express();
 
-const port = process.env.PORT || 3000;
+const port = process.env.PORT;
 
-app.get('/', (req, res) => {
-  res.status(200).send({
-    message: 'Home page mundo Down API!',
-  });
-});
+app.use(express.json());
+app.use(routes);
 
-app.listen(port);
-console.log('Aplicação executando na porta ', port);
+app.listen(port, () => console.log("Server is runnig on port", port));
