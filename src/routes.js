@@ -1,9 +1,9 @@
-import { Router } from "express";
+import {Router} from 'express';
 
 const routes = Router();
 
 routes.get('/', (req, res) => {
-    res.status(200).send('Home page mundo Down API!');
-  });
+  res.status(200).send('Home page mundo Down API!');
+});
 
-export {routes}
+export {routes};
