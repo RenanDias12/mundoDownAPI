@@ -1,0 +1,52 @@
+version: '3.7'
+
+services:
+  mongo:
+    image: mongo
+    container_name: mongo
+    ports:
+      - "27017:27017"
+    environment:
+      MONGO_INITDB_ROOT_USERNAME: ${ADMIN_MONGO_USER}
+      MONGO_INITDB_ROOT_PASSWORD: ${ADMIN_MONGO_PASSWORD}
+      MONGO_INITDB_DATABASE: ${MONGO_ADMIN_DB}
+      SPECTRUM_MONGO_USER: ${MONGO_USER}
+      SPECTRUM_MONGO_PASSWORD: ${MONGO_PASSWORD}
+      SPECTRUM_MONGO_DATABASE: ${MONGO_DATABASE}
+    volumes:
+      - ${MONGO_VOLUME}
+    restart: always
+
+  mongo-express:
+    image: mongo-express:latest
+    container_name: mongo-express
+    environment:
+      - ME_CONFIG_MONGODB_SERVER=mongo
+      - ME_CONFIG_MONGODB_ENABLE_ADMIN=true
+      - ME_CONFIG_MONGODB_ADMINUSERNAME=${ADMIN_MONGO_USER}
+      - ME_CONFIG_MONGODB_ADMINPASSWORD=${ADMIN_MONGO_PASSWORD}
+      - ME_CONFIG_BASICAUTH_USERNAME=${MONGO_USER}
+      - ME_CONFIG_BASICAUTH_PASSWORD=${MONGO_PASSWORD}
+    depends_on:
+      - mongo
+    ports:
+      - 8081:8081
+    restart: always
+
+  mundodown:
+    build: ./
+    container_name: mundodownapi
+    environment:
+      - PORT=${PORT}
+    ports:
+      - ${PORT}:${PORT}
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "10m"
+        max-file: "5"
+    restart: always
+
+  # volumes:
+  #   mongodb_data:
+  #     driver: local
