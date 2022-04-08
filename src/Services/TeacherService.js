@@ -30,7 +30,8 @@ class TeacherService {
   }
 
   async getTeacherByEmail(candidateEmail){
-    const teacher = await Teacher.findOne({'email': candidateEmail});
+    const teacher = await Teacher.findOne().where('email').equals(candidateEmail);
+    teacher.password = undefined;
     
     return teacher;
   }

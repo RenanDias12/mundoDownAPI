@@ -33,7 +33,7 @@ class TeacherController {
     const teacherService = new TeacherService();
 
     try {
-      const data = await teacherService.getTeacherByEmail(request.body.email);
+      const data = await teacherService.getTeacherByEmail(request.query.email);
       return response.status(200).json(data);
     } catch (error) {
       return response.status(500).json({ Error: error.Message });
