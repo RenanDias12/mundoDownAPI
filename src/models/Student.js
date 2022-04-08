@@ -19,10 +19,6 @@ const schema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
-    studentIds: {
-      type: Schema.Types.Array,
-      required: false,
-    },
   },
   {
     timestamps: true,
@@ -31,17 +27,17 @@ const schema = new Schema(
 );
 
 schema.pre("save", function (next) {
-  var teacher = this;
+  var student = this;
 
-  if (!teacher.isModified("password")) return next();
+  if (!student.isModified("password")) return next();
 
   bcrypt.genSalt(Number(process.env.SALT_WORK_FACTOR), function (err, salt) {
     if (err) return next(err);
 
-    bcrypt.hash(teacher.password, salt, function (err, hash) {
+    bcrypt.hash(student.password, salt, function (err, hash) {
       if (err) return next(err);
 
-      teacher.password = hash;
+      student.password = hash;
       next();
     });
   });
@@ -55,5 +51,5 @@ schema.methods.comparePassword = function (candidatePassword, cb) {
   });
 };
 
-const Teacher = model("Teacher", schema);
-export { Teacher };
+const Student = model("Student", schema);
+export { Student };

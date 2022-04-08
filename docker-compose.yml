@@ -38,6 +38,7 @@ services:
     container_name: mundodownapi
     environment:
       - PORT=${PORT}
+      - SALT_WORK_FACTOR=${SALT_WORK_FACTOR}
     ports:
       - ${PORT}:${PORT}
     logging:

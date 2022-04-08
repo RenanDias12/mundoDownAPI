@@ -17,23 +17,38 @@ class TeacherService {
       email: teacherToCreate.email,
       password: teacherToCreate.password,
     });
-    const result = teacher.save();
+    const result = await teacher.save();
 
     return result;
   }
 
   async getAllTeachers() {
     const teachers = await Teacher.find();
-    teachers.forEach(t => t.password = undefined);
+    teachers.forEach((t) => (t.password = undefined));
 
     return teachers;
   }
 
-  async getTeacherByEmail(candidateEmail){
-    const teacher = await Teacher.findOne().where('email').equals(candidateEmail);
+  async getTacherById(teacherId) {
+    const teacher = await Teacher.findById(teacherId);
     teacher.password = undefined;
-    
+
     return teacher;
+  }
+
+  async getTeacherByEmail(candidateEmail) {
+    const teacher = await Teacher.findOne()
+      .where("email")
+      .equals(candidateEmail);
+    teacher.password = undefined;
+
+    return teacher;
+  }
+
+  async removeTeacher(teacherId) {
+    const result = await Teacher.deleteOne({ _id: teacherId });
+
+    return result;
   }
 }
 

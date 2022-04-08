@@ -5,8 +5,6 @@
   "main": "./src/server.js",
   "scripts": {
     "dev": "nodemon -r esm ./src/server.js",
-    "lint": "eslint --ext .js,.html -f ./node_modules/eslint-friendly-formatter . --fix",
-    "prepush": "npm run lint",
     "start": "node -r esm ./src/server.js"
   },
   "repository": {
