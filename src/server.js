@@ -4,7 +4,7 @@ import {routes} from './routes';
 import mongoose from 'mongoose';
 
 const app = express();
-const uri = 'mongodb://localhost:27017/users';
+const uri = JSON.parse(process.env.DEVELOP_RUNNING) ? process.env.DEV_MONGODB_URI : process.env.MONGODB_URI;
 const port = process.env.PORT;
 
 mongoose.connect(uri, {
