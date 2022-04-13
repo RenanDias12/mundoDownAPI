@@ -78,6 +78,9 @@ class StudentService {
 
     return result;
   }
+
+  //TODO: update password
+  async updatePassword(studentId, password, newPassword) {}
 }
 
 export { StudentService };

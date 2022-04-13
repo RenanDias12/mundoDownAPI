@@ -50,6 +50,9 @@ class TeacherService {
 
     return result;
   }
+
+  //TODO: update password
+  async updatePassword(teacherId, password, newPassword) {}
 }
 
 export { TeacherService };

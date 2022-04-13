@@ -48,10 +48,10 @@ schema.pre("save", function (next) {
 });
 
 schema.methods.comparePassword = function (candidatePassword, cb) {
-  bcrypt.compare(candidatePassword, this.password, function (err, isMatch) {
+  bcrypt.compare(candidatePassword, this.password, function (err, isValid) {
     if (err) return cb(err);
 
-    cb(null, isMatch);
+    cb(null, isValid);
   });
 };
 
