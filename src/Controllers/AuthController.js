@@ -23,8 +23,7 @@ class AuthController {
         return response.status(401).json({ Error: "Malformed token" });
       }
 
-      //TODO: verify falhando
-      jsonwebtoken.verify(token, process.env.JWT_SECRET, (err) => {
+      jsonwebtoken.verify(token, process.env.JWT_KEY, (err) => {
         if (err) return response.status(401).json({ Error: "Invalid token" });
 
         return next();
