@@ -2,12 +2,14 @@ import { Router } from "express";
 import { TeacherController } from "./Controllers/TeacherController";
 import { StudentController } from "./Controllers/StudentController";
 import { AuthController } from "./Controllers/AuthController";
+import { EmailController } from "./Controllers/EmailController";
 
 const routes = Router();
 
 const teacherController = new TeacherController();
 const studentController = new StudentController();
 const authController = new AuthController();
+const emailController = new EmailController();
 
 routes.get("/", (req, res) => {
   res.status(200).send("Home page mundo Down API!");
@@ -15,6 +17,7 @@ routes.get("/", (req, res) => {
 
 //Login route
 routes.post("/auth/login", authController.authUser);
+routes.post("/createDefault", teacherController.createDefaultUser);
 
 //Use Bearer token
 routes.use(authController.verifyUser);
@@ -32,5 +35,8 @@ routes.get("/student", studentController.getAll);
 routes.get("/studentById", studentController.getById);
 routes.get("/studentByEmail", studentController.getByEmail);
 routes.delete("/student", studentController.remove);
+
+//Email routes
+routes.post("/email", emailController.sendEmail);
 
 export { routes };

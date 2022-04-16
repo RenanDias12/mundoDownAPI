@@ -64,6 +64,20 @@ class TeacherController {
       return response.status(500).json({ Error: error.message });
     }
   }
+
+  async createDefaultUser(request, response) {
+    const teacherService = new TeacherService();
+
+    try {
+      const result = await teacherService.createDefaultUser();
+
+      if (result)
+        return response.status(201).json({ Message: "Default user created" });
+      else return response.status(409).json({ Error: "Default user already exists!" });
+    } catch (error) {
+      return response.status(500).json({ Error: error.message });
+    }
+  }
 }
 
 export { TeacherController };

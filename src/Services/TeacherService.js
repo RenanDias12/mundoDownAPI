@@ -51,6 +51,28 @@ class TeacherService {
     return result;
   }
 
+  async createDefaultUser() {
+    const defaultUserToCreate = {
+      name: process.env.D_USER_NAME,
+      email: process.env.D_USER_EMAIL,
+      password: process.env.D_USER_PASS,
+    };
+
+    let defaultUser = await Teacher.find({})
+      .where("email")
+      .equals(defaultUserToCreate.email);
+
+    if (defaultUser.length) return 0;
+
+    defaultUser = new Teacher({
+      _id: new mongoose.Types.ObjectId(),
+      name: defaultUserToCreate.name,
+      email: defaultUserToCreate.email,
+      password: defaultUserToCreate.password,
+    });
+    return await defaultUser.save();
+  }
+
   //TODO: update password
   async updatePassword(teacherId, password, newPassword) {}
 }
