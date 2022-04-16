@@ -34,7 +34,7 @@ services:
     restart: always
 
   mundodown:
-    build: ./
+    image: renandias12/mundodownapi:latest
     container_name: mundodownapi
     environment:
       - PORT=${PORT}
