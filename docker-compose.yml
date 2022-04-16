@@ -38,7 +38,6 @@ services:
     container_name: mundodownapi
     environment:
       - PORT=${PORT}
-      - SALT_WORK_FACTOR=${SALT_WORK_FACTOR}
       - DEVELOP_RUNNING=false
       - MONGODB_URI=${MONGODB_URI}
       - DEV_MONGODB_URI=${DEV_MONGODB_URI}
