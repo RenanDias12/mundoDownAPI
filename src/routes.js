@@ -27,6 +27,7 @@ routes.post("/teacher", teacherController.create);
 routes.get("/teacher", teacherController.getAll);
 routes.get("/teacherById", teacherController.getById);
 routes.get("/teacherByEmail", teacherController.getByEmail);
+routes.get("/studentsList", teacherController.getStudentsListByTeacherId);
 routes.delete("/teacher", teacherController.remove);
 
 // Student routes
@@ -34,6 +35,7 @@ routes.post("/student", studentController.create);
 routes.get("/student", studentController.getAll);
 routes.get("/studentById", studentController.getById);
 routes.get("/studentByEmail", studentController.getByEmail);
+routes.get("/myTeacher", studentController.getTeacherByStudentId);
 routes.delete("/student", studentController.remove);
 
 //Email routes

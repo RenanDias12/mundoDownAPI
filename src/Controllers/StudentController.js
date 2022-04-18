@@ -55,6 +55,18 @@ class StudentController {
     }
   }
 
+  async getTeacherByStudentId(request, response) {
+    const studentService = new StudentService();
+
+    try {
+      const data = await studentService.getTeacherByStudentId(request.query.id);
+      if(data == 1) return response.status(404).json({ Message: "Teacher not found" });
+      return response.status(200).json(data);
+    } catch (error) {
+      return response.status(500).json({ Error: error.message });
+    }
+  }
+
   async remove(request, response) {
     const studentService = new StudentService();
 

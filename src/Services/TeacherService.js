@@ -1,4 +1,5 @@
 import { Teacher } from "../models/Teacher";
+import { Student } from "../models/Student";
 import mongoose from "mongoose";
 
 class TeacherService {
@@ -43,6 +44,22 @@ class TeacherService {
     teacher.password = undefined;
 
     return teacher;
+  }
+
+  async getStudentsListByTeacherId(teacherId) {
+    const teacher = await Teacher.findById(teacherId);
+
+    if (!teacher) return 1;
+
+    let students = [];
+
+    for(let studentId of teacher.studentIds){
+      let student = await Student.findById(studentId);
+      student.password = undefined;
+      students.push(student);
+    }
+
+    return students;
   }
 
   async removeTeacher(teacherId) {

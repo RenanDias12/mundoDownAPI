@@ -56,6 +56,17 @@ class StudentService {
     return student;
   }
 
+  async getTeacherByStudentId(studentId) {
+    let teacher = await Teacher.findOne()
+      .where("studentIds")
+      .in(new mongoose.Types.ObjectId(studentId));
+    if (!teacher) return 1;
+    teacher.studentIds = undefined;
+    teacher.password = undefined;
+
+    return teacher;
+  }
+
   async removeStudent(studentId) {
     const result = await Student.deleteOne({ _id: studentId });
 
