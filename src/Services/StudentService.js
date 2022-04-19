@@ -1,5 +1,5 @@
-import { Student } from "../models/Student";
-import { Teacher } from "../models/Teacher";
+import { Student } from "../Models/Student";
+import { Teacher } from "../Models/Teacher";
 import mongoose from "mongoose";
 
 class StudentService {

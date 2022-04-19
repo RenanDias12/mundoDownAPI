@@ -12,7 +12,7 @@ const authController = new AuthController();
 const emailController = new EmailController();
 
 routes.get("/", (req, res) => {
-  res.status(200).send("Home page mundo Down API!");
+  res.sendFile(__dirname + "/home.html");
 });
 
 //Login route
