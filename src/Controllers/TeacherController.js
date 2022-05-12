@@ -1,4 +1,4 @@
-import { TeacherService } from "../Services/TeacherService";
+import { TeacherService } from "../services/teacherService";
 
 class TeacherController {
   constructor() {}

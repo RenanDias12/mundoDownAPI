@@ -1,5 +1,5 @@
-import { Teacher } from "../Models/Teacher";
-import { Student } from "../Models/Student";
+import { Teacher } from "../models/teacher";
+import { Student } from "../models/student";
 import jsonwebtoken from "jsonwebtoken";
 
 class AuthController {

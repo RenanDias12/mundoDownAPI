@@ -1,8 +1,8 @@
 import { Router } from "express";
-import { TeacherController } from "./Controllers/TeacherController";
-import { StudentController } from "./Controllers/StudentController";
-import { AuthController } from "./Controllers/AuthController";
-import { EmailController } from "./Controllers/EmailController";
+import {TeacherController} from "./controllers/teacherController";
+import {StudentController} from "./controllers/studentController";
+import {AuthController} from "./controllers/authController";
+import {EmailController} from "./controllers/emailController";
 
 const routes = Router();
 

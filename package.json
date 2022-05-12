@@ -5,7 +5,8 @@
   "main": "./src/server.js",
   "scripts": {
     "dev": "nodemon -r esm ./src/server.js",
-    "start": "node -r esm ./src/server.js"
+    "start": "node -r esm ./src/server.js",
+    "test": "jest --testEnvironment=node --runInBand --detectOpenHandles ./tests"
   },
   "repository": {
     "type": "git",
@@ -23,13 +24,20 @@
     "nodemon": "^2.0.15"
   },
   "dependencies": {
+    "@babel/plugin-transform-runtime": "^7.17.10",
+    "@babel/preset-env": "^7.17.10",
+    "@babel/runtime": "^7.17.9",
+    "babel-jest": "^28.1.0",
     "bcryptjs": "^2.4.3",
     "dotenv": "^16.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
+    "mongodb-memory-server": "^8.5.2",
     "mongoose": "^6.2.9",
-    "nodemailer": "^6.7.3"
+    "nodemailer": "^6.7.3",
+    "ts-jest": "^28.0.2"
   }
 }
