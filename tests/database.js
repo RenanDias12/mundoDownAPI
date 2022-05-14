@@ -1,40 +1,45 @@
-import mongoose from "mongoose";
-import { MongoMemoryServer } from "mongodb-memory-server";
+import mongoose, { connect } from "mongoose";
+import 'dotenv/config';
+import {MongoClient} from "mongodb";
+//import { MongoMemoryServer } from "mongodb-memory-server";
 
 
 class TestDatabase {
+  constructor() { }
 
-    constructor() {
-        this.mongod = null;
-    }
-
-    //connect to the inmemory database
-    async connect() {
-        const mongod = await MongoMemoryServer.create();
-        const uri = mongod.getUri();
-        const mongooseOpts = {
-            useNewUrlParser: true,
-            useUnifiedTopology: true,
-        };
+  //connect to the database
+  async connect() {
+    const uri = process.env.TEST_MONGODB_URI;
+    const mongooseOpts = {
+      authSource: process.env.MONGO_AUTH_SOURCE,
+      user: process.env.ADMIN_MONGO_USER,
+      pass: process.env.ADMIN_MONGO_PASSWORD,
+      useNewUrlParser: true,
+    };
+    try {
         await mongoose.connect(uri, mongooseOpts);
-        this.mongod = mongod;
+    } catch (error) {
+        console.log("Error", error);
     }
+  }
 
-    //clear the database
-    async clear() {
-        const collections = mongoose.connection.collections;
-        for (const key in collections) {
-            const collection = collections[key];
-            await collection.deleteMany({});
-        }
+  //clear the database
+  async clear() {
+    const collections = mongoose.connection.collections;
+    for (const key in collections) {
+      const collection = collections[key];
+      await collection.deleteMany({});
     }
+  }
 
-    //disconnect from the inmemory database
-    async disconnect() {
-        await mongoose.connection.dropDatabase();
-        await mongoose.connection.close();
-        await this.mongod.stop();
+  //disconnect from the database
+  async disconnect() {
+    try {
+        await mongoose.connection.close(true);
+    } catch (error) {
+        console.log("Error", error);
     }
+  }
 }
 
 export { TestDatabase };
