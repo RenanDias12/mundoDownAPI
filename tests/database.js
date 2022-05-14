@@ -1,8 +1,5 @@
-import mongoose, { connect } from "mongoose";
+import mongoose from "mongoose";
 import 'dotenv/config';
-import {MongoClient} from "mongodb";
-//import { MongoMemoryServer } from "mongodb-memory-server";
-
 
 class TestDatabase {
   constructor() { }
