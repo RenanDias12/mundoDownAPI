@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon -r esm ./src/server.js",
     "start": "node -r esm ./src/server.js",
-    "test": "jest --testEnvironment=node --runInBand --forceExit ./tests"
+    "test": "jest --testEnvironment=node --runInBand ./tests"
   },
   "repository": {
     "type": "git",
@@ -37,6 +37,7 @@
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.9",
     "nodemailer": "^6.7.3",
+    "supertest": "^6.2.3",
     "ts-jest": "^28.0.2"
   }
 }

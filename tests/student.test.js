@@ -2,17 +2,18 @@ import { TestDatabase } from "./database";
 import { Student } from "../src/models/student";
 import mongoose from "mongoose";
 
-const testDatabase = new TestDatabase();
-beforeAll(async () => {
-  await testDatabase.connect();
-});
-
-afterAll(async () => {
-  await testDatabase.clear();
-  await testDatabase.disconnect();
-});
-
 describe("Student test", () => {
+  const testDatabase = new TestDatabase();
+
+  beforeAll(async () => {
+    await testDatabase.connect();
+  });
+
+  afterAll(async () => {
+    await testDatabase.clear();
+    await testDatabase.disconnect();
+  });
+
   it("Structure test", async () => {
     const student = new Student({
       _id: new mongoose.Types.ObjectId(),
