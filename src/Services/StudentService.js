@@ -90,8 +90,17 @@ class StudentService {
     return result;
   }
 
-  //TODO: update password
-  async updatePassword(studentId, password, newPassword) {}
+  async updatePassword(studentId, password, newPassword) {
+    const student = await Student.findById(new mongoose.Types.ObjectId(studentId));
+
+    if (!student) return 1;
+    if (student.password !== password) return 2;
+
+    student.password = newPassword;
+    const result = await student.save();
+
+    return result;
+  }
 }
 
 export { StudentService };

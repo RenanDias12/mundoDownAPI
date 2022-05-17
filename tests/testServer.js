@@ -5,7 +5,6 @@ import mongoose from 'mongoose';
 
 const app = express();
 const uri = process.env.TEST_MONGODB_URI;
-const port = process.env.PORT;
 
 mongoose.connect(uri, {
     authSource: process.env.MONGO_AUTH_SOURCE,

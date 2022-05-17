@@ -80,18 +80,21 @@ class TeacherController {
     }
   }
 
-  async createDefaultUser(request, response) {
+  async updatePassword(request, response) {
     const teacherService = new TeacherService();
 
     try {
-      const result = await teacherService.createDefaultUser();
+      const result = await teacherService.updatePassword(
+        request.body.id,
+        request.body.password,
+        request.body.newPassword
+      );
 
-      if (result)
-        return response.status(201).json({ Message: "Default user created" });
-      else
-        return response
-          .status(409)
-          .json({ Error: "Default user already exists!" });
+      if (result === 1)
+        return response.status(404).json({ Error: "Teacher not found" });
+      else if (result === 2)
+        return response.status(409).json({ Error: "Invalid password" });
+      else return response.status(200).json({ Message: "Password updated" });
     } catch (error) {
       return response.status(500).json({ Error: error.message });
     }

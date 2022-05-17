@@ -1,8 +1,11 @@
 import mongoose from "mongoose";
+import { Migration } from "../src/database/migration";
 import 'dotenv/config';
 
 class TestDatabase {
-  constructor() { }
+  constructor() { 
+    this.migration = new Migration();
+  }
 
   //connect to the database
   async connect() {
@@ -15,6 +18,7 @@ class TestDatabase {
     };
     try {
         await mongoose.connect(uri, mongooseOpts);
+        await this.migration.up();
     } catch (error) {
         console.log("Error", error);
     }

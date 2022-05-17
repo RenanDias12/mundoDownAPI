@@ -80,6 +80,26 @@ class StudentController {
       return response.status(500).json({ Error: error.message });
     }
   }
+
+  async updatePassword(request, response) {
+    const studentService = new StudentService();
+
+    try {
+      const result = await studentService.updateStudentPassword(
+        request.body.id,
+        request.body.password,
+        request.body.newPassword
+      );
+
+      if (result === 1)
+        return response.status(404).json({ Error: "Student not found" });
+      else if (result === 2)
+        return response.status(409).json({ Error: "Invalid password" });
+      else return response.status(200).json({ Message: "Password updated" });
+    } catch (error) {
+      return response.status(500).json({ Error: error.message });
+    }
+  }
 }
 
 export { StudentController };

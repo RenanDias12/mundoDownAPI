@@ -17,7 +17,6 @@ routes.get("/", (req, res) => {
 
 //Login route
 routes.post("/auth/login", authController.authUser);
-routes.post("/createDefault", teacherController.createDefaultUser);
 
 //Use Bearer token
 routes.use(authController.verifyUser);
@@ -29,6 +28,7 @@ routes.get("/teacherById", teacherController.getById);
 routes.get("/teacherByEmail", teacherController.getByEmail);
 routes.get("/studentsList", teacherController.getStudentsListByTeacherId);
 routes.delete("/teacher", teacherController.remove);
+routes.put("/teacher/pass", teacherController.updatePassword);
 
 // Student routes
 routes.post("/student", studentController.create);
@@ -37,6 +37,7 @@ routes.get("/studentById", studentController.getById);
 routes.get("/studentByEmail", studentController.getByEmail);
 routes.get("/myTeacher", studentController.getTeacherByStudentId);
 routes.delete("/student", studentController.remove);
+routes.put("/student/pass", studentController.updatePassword);
 
 //Email routes
 routes.post("/email", emailController.sendEmail);
