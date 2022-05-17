@@ -1,6 +1,7 @@
 import { Teacher } from "../models/teacher";
 import { Student } from "../models/student";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 class TeacherService {
   constructor() {}
@@ -31,7 +32,9 @@ class TeacherService {
   }
 
   async getTeacherById(teacherId) {
-    const teacher = await Teacher.findById(new mongoose.Types.ObjectId(teacherId));
+    const teacher = await Teacher.findById(
+      new mongoose.Types.ObjectId(teacherId)
+    );
     teacher.password = undefined;
 
     return teacher;
@@ -53,7 +56,7 @@ class TeacherService {
 
     let students = [];
 
-    for(let studentId of teacher.studentIds){
+    for (let studentId of teacher.studentIds) {
       let student = await Student.findById(studentId);
       student.password = undefined;
       students.push(student);
@@ -69,17 +72,26 @@ class TeacherService {
   }
 
   async updatePassword(teacherId, password, newPassword) {
-    const teacher = await Teacher.findById(teacherId);
+    const teacher = await Teacher.findById(
+      new mongoose.Types.ObjectId(teacherId)
+    );
 
     if (!teacher) return 1;
 
-    //buscar senha do banco e validar com validate do bcrypt
-    if (teacher.password !== password) return 2;
+    let result = bcrypt.compareSync(
+      password,
+      teacher.password,
+      function (err, isValid) {
+        if (err) throw err;
+        return isValid;
+      }
+    );
 
-    teacher.password = newPassword;
-    const result = await teacher.save();
-
-    return result;
+    if (result) {
+      teacher.password = newPassword;
+      teacher.save();
+      return 0;
+    } else return 2;
   }
 }
 

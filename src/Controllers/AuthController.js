@@ -30,7 +30,7 @@ class AuthController {
       });
     } catch (error) {
       return response.status(500).json({
-        Message: error.message,
+        Error: error.message,
       });
     }
   }
@@ -98,7 +98,7 @@ class AuthController {
       } else return response.status(401).json({ Error: "Invalid user type" });
     } catch (error) {
       return response.status(500).json({
-        Message: error.message,
+        Error: error.message,
       });
     }
   }

@@ -93,7 +93,7 @@ class TeacherController {
       if (result === 1)
         return response.status(404).json({ Error: "Teacher not found" });
       else if (result === 2)
-        return response.status(409).json({ Error: "Invalid password" });
+        return response.status(401).json({ Error: "Invalid password" });
       else return response.status(200).json({ Message: "Password updated" });
     } catch (error) {
       return response.status(500).json({ Error: error.message });

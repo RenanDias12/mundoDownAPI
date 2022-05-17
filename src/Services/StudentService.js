@@ -1,6 +1,7 @@
 import { Student } from "../models/student";
 import { Teacher } from "../models/teacher";
 import mongoose from "mongoose";
+import bcrypt from "bcryptjs";
 
 class StudentService {
   constructor() {}
@@ -91,15 +92,26 @@ class StudentService {
   }
 
   async updatePassword(studentId, password, newPassword) {
-    const student = await Student.findById(new mongoose.Types.ObjectId(studentId));
+    const student = await Student.findById(
+      new mongoose.Types.ObjectId(studentId)
+    );
 
     if (!student) return 1;
-    if (student.password !== password) return 2;
 
-    student.password = newPassword;
-    const result = await student.save();
+    let result = bcrypt.compareSync(
+      password,
+      student.password,
+      function (err, isValid) {
+        if (err) throw err;
+        return isValid;
+      }
+    );
 
-    return result;
+    if (result) {
+      student.password = newPassword;
+      student.save();
+      return 0;
+    } else return 2;
   }
 }
 
