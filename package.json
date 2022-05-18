@@ -6,7 +6,7 @@
   "scripts": {
     "dev": "nodemon -r esm ./src/server.js",
     "start": "node -r esm ./src/server.js",
-    "test": "jest --testEnvironment=node --runInBand ./tests"
+    "test": "jest --testEnvironment=node --runInBand --collectCoverage ./tests"
   },
   "repository": {
     "type": "git",
