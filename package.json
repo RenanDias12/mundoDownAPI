@@ -19,10 +19,6 @@
     "url": "https://github.com/RenanDias12/mundoDown/issues"
   },
   "homepage": "https://github.com/RenanDias12/mundoDown#readme",
-  "devDependencies": {
-    "husky": "^2.3.0",
-    "nodemon": "^2.0.15"
-  },
   "dependencies": {
     "@babel/plugin-transform-runtime": "^7.17.10",
     "@babel/preset-env": "^7.17.10",
@@ -32,11 +28,13 @@
     "dotenv": "^16.0.0",
     "esm": "^3.2.25",
     "express": "^4.17.1",
+    "husky": "^2.3.0",
     "jest": "^28.1.0",
     "jsonwebtoken": "^8.5.1",
     "mongodb": "^4.4.1",
     "mongoose": "^6.2.9",
     "nodemailer": "^6.7.3",
+    "nodemon": "^2.0.15",
     "supertest": "^6.2.3",
     "ts-jest": "^28.0.2"
   }
