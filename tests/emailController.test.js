@@ -1,6 +1,5 @@
 import { TestDatabase } from "./database";
 import supertest from "supertest";
-import mongoose from "mongoose";
 import app from "./testServer";
 
 describe("Teacher test", () => {
