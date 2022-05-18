@@ -23,21 +23,21 @@ routes.use(authController.verifyUser);
 
 // Teacher routes
 routes.post("/teacher", teacherController.create);
+routes.put("/teacher/pass", teacherController.updatePassword);
 routes.get("/teacher", teacherController.getAll);
 routes.get("/teacherById", teacherController.getById);
 routes.get("/teacherByEmail", teacherController.getByEmail);
 routes.get("/studentsList", teacherController.getStudentsListByTeacherId);
 routes.delete("/teacher", teacherController.remove);
-routes.put("/teacher/pass", teacherController.updatePassword);
 
 // Student routes
 routes.post("/student", studentController.create);
+routes.put("/student/pass", studentController.updatePassword);
 routes.get("/student", studentController.getAll);
 routes.get("/studentById", studentController.getById);
 routes.get("/studentByEmail", studentController.getByEmail);
 routes.get("/myTeacher", studentController.getTeacherByStudentId);
 routes.delete("/student", studentController.remove);
-routes.put("/student/pass", studentController.updatePassword);
 
 //Email routes
 routes.post("/email", emailController.sendEmail);

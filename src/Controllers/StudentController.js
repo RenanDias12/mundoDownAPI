@@ -85,7 +85,7 @@ class StudentController {
     const studentService = new StudentService();
 
     try {
-      const result = await studentService.updateStudentPassword(
+      const result = await studentService.updatePassword(
         request.body.id,
         request.body.password,
         request.body.newPassword

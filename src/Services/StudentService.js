@@ -41,7 +41,7 @@ class StudentService {
     return students;
   }
 
-  async getById(studentId) {
+  async getStudentById(studentId) {
     const student = await Student.findById(studentId);
     student.password = undefined;
 
