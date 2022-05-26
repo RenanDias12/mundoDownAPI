@@ -1,5 +1,6 @@
 import { Student } from "../models/student";
 import { Teacher } from "../models/teacher";
+import { Module } from "../models/modules";
 import mongoose from "mongoose";
 import bcrypt from "bcryptjs";
 
@@ -17,19 +18,11 @@ class StudentService {
       _id: new mongoose.Types.ObjectId(),
       name: studentToCreate.name,
       email: studentToCreate.email,
+      age: studentToCreate.age,
+      fone: studentToCreate.fone,
       password: studentToCreate.password,
     });
     const result = await student.save();
-
-    var teacher = await Teacher.findById(studentToCreate.teacherId);
-    if (teacher) {
-      teacher.studentIds.push(student._id);
-      await Teacher.updateOne({ _id: teacher._id }, teacher);
-    } else {
-      console.log("Student not added to teacher");
-      await Student.deleteOne({ _id: student._id });
-      return 2;
-    }
 
     return result;
   }
@@ -57,38 +50,83 @@ class StudentService {
     return student;
   }
 
-  async getTeacherByStudentId(studentId) {
-    let teacher = await Teacher.findOne()
+  async putModule(studentId, studentModule) {
+    studentId = new mongoose.Types.ObjectId(studentId);
+
+    let student = await Student.findById(studentId);
+
+    if (!student) return 0;
+
+    const moduleDocument = new Module({
+      _id: new mongoose.Types.ObjectId(),
+      name: studentModule.name,
+      startDate: new Date(),
+      tasks: studentModule.tasks,
+    });
+
+    await moduleDocument.save();
+
+    student.modules.push(moduleDocument._id);
+
+    await student.save();
+
+    return 1;
+  }
+
+  async putTeacher(studentId, teacherId) {
+    teacherId = new mongoose.Types.ObjectId(teacherId);
+    studentId = new mongoose.Types.ObjectId(studentId);
+
+    const teacher = await Teacher.findById(teacherId);
+    const student = await Student.findById(studentId);
+
+    if (!teacher || !student) return 0;
+
+    if (!teacher.studentIds.includes(studentId)) {
+      teacher.studentIds.push(studentId);
+      teacher.save();
+    }
+
+    if (!student.teacherIds.includes(teacherId)) {
+      student.teacherIds.push(teacherId);
+      student.save();
+    }
+
+    return 1;
+  }
+
+  async getTeachersByStudentId(studentId) {
+    let teachers = await Teacher.find()
       .where("studentIds")
       .in(new mongoose.Types.ObjectId(studentId));
-    if (!teacher) return 1;
-    teacher.studentIds = undefined;
-    teacher.password = undefined;
+    if (!teachers.length) return 1;
 
-    return teacher;
+    teachers.forEach((t) => {
+      t.password = undefined;
+      t.studentIds = undefined;
+    });
+
+    return teachers;
   }
 
   async removeStudent(studentId) {
     const result = await Student.deleteOne({ _id: studentId });
 
     if (result.deletedCount) {
-      var teacher = await Teacher.findOne({
-        studentIds: new mongoose.Types.ObjectId(studentId),
-      });
-      if (teacher) {
-        teacher.studentIds.remove(studentId);
-        const teacherResult = await Teacher.updateOne(
-          { _id: teacher._id },
-          teacher
-        );
+      await Teacher.find()
+        .where("studentIds")
+        .in(new mongoose.Types.ObjectId(studentId))
+        .then((teachers) => {
+          if (teachers.length) {
+            teachers.forEach(async (teacher) => {
+              teacher.studentIds.remove(new mongoose.Types.ObjectId(studentId));
+              await teacher.save();
+            });
+          }
+        });
 
-        if (teacherResult.modifiedCount) {
-          console.log("Student removed from teacher");
-        }
-      }
-    }
-
-    return result;
+      return 1;
+    } else return 0;
   }
 
   async updatePassword(studentId, password, newPassword) {

@@ -27,6 +27,7 @@ routes.put("/teacher/pass", teacherController.updatePassword);
 routes.get("/teacher", teacherController.getAll);
 routes.get("/teacherById", teacherController.getById);
 routes.get("/teacherByEmail", teacherController.getByEmail);
+routes.put("/teacher/student", teacherController.putStudent);
 routes.get("/studentsList", teacherController.getStudentsListByTeacherId);
 routes.delete("/teacher", teacherController.remove);
 
@@ -36,7 +37,9 @@ routes.put("/student/pass", studentController.updatePassword);
 routes.get("/student", studentController.getAll);
 routes.get("/studentById", studentController.getById);
 routes.get("/studentByEmail", studentController.getByEmail);
-routes.get("/myTeacher", studentController.getTeacherByStudentId);
+routes.put('/student/module', studentController.putModule);
+routes.put("/student/teacher", studentController.putTeacher);
+routes.get("/myTeacher", studentController.getTeachersByStudentId);
 routes.delete("/student", studentController.remove);
 
 //Email routes

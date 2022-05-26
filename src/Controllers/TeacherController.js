@@ -51,6 +51,18 @@ class TeacherController {
     }
   }
 
+  async putStudent(request, response) {
+    const teacherService = new TeacherService();
+
+    try {
+      const data = await teacherService.putStudent(request.body.teacherId, request.body.studentId);
+      if(data) return response.status(200).json({ Message: "Student added" });
+      return response.status(404).json({ Error: "Teacher not found" });
+    } catch (error) {
+      return response.status(500).json({ Error: error.message });
+    }
+  }
+
   async getStudentsListByTeacherId(request, response) {
     const teacherService = new TeacherService();
 
@@ -72,9 +84,10 @@ class TeacherController {
     try {
       const result = await teacherService.removeTeacher(request.query.id);
 
-      if (result.deletedCount)
+      if (result)
         return response.status(200).json({ Message: "Teacher removed" });
-      else return response.status(404).json({ Error: "Teacher not found" });
+      else
+        return response.status(404).json({Error: "Teacher not found"});
     } catch (error) {
       return response.status(500).json({ Error: error.message });
     }

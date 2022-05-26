@@ -16,6 +16,8 @@ class TeacherService {
     teacher = new Teacher({
       _id: new mongoose.Types.ObjectId(),
       name: teacherToCreate.name,
+      age: teacherToCreate.age,
+      fone: teacherToCreate.fone,
       email: teacherToCreate.email,
       password: teacherToCreate.password,
     });
@@ -49,18 +51,38 @@ class TeacherService {
     return teacher;
   }
 
-  async getStudentsListByTeacherId(teacherId) {
+  async putStudent(teacherId, studentId) {
+    teacherId = new mongoose.Types.ObjectId(teacherId);
+    studentId = new mongoose.Types.ObjectId(studentId);
+
     const teacher = await Teacher.findById(teacherId);
+    const student = await Student.findById(studentId);
 
-    if (!teacher) return 1;
+    if (!teacher || !student) return 0;
 
-    let students = [];
-
-    for (let studentId of teacher.studentIds) {
-      let student = await Student.findById(studentId);
-      student.password = undefined;
-      students.push(student);
+    if (!teacher.studentIds.includes(studentId)) {
+      teacher.studentIds.push(studentId);
+      teacher.save();
     }
+
+    if (!student.teacherIds.includes(teacherId)) {
+      student.teacherIds.push(teacherId);
+      student.save();
+    }
+
+    return 1;
+  }
+
+  async getStudentsListByTeacherId(teacherId) {
+    let students = await Student.find()
+      .where("teacherIds")
+      .in(new mongoose.Types.ObjectId(teacherId));
+    if (!students.length) return 1;
+
+    students.forEach((s) => {
+      s.password = undefined;
+      s.teacherIds = undefined;
+    });
 
     return students;
   }
@@ -68,7 +90,21 @@ class TeacherService {
   async removeTeacher(teacherId) {
     const result = await Teacher.deleteOne({ _id: teacherId });
 
-    return result;
+    if (result.deletedCount) {
+      await Student.find()
+        .where("teacherIds")
+        .in(new mongoose.Types.ObjectId(teacherId))
+        .then((students) => {
+          if (students.length) {
+            students.forEach(async (student) => {
+              student.teacherIds.remove(new mongoose.Types.ObjectId(teacherId));
+              await student.save();
+            });
+          }
+        });
+
+      return 1;
+    } else return 0;
   }
 
   async updatePassword(teacherId, password, newPassword) {

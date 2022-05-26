@@ -15,10 +15,26 @@ const schema = new Schema(
       type: Schema.Types.String,
       required: true,
     },
+    age: {
+      type: Schema.Types.Number,
+      required: false,
+    },
+    fone: {
+      type: Schema.Types.String,
+      required: false,
+    },
     password: {
       type: Schema.Types.String,
       required: true,
     },
+    teacherIds: {
+      type: Schema.Types.Array,
+      required: false,
+    },
+    modules: {
+      type: Schema.Types.Array,
+      required: false,
+    }
   },
   {
     timestamps: true,
