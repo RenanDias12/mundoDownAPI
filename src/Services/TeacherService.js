@@ -77,7 +77,7 @@ class TeacherService {
     let students = await Student.find()
       .where("teacherIds")
       .in(new mongoose.Types.ObjectId(teacherId));
-    if (!students.length) return 1;
+    if (!students.length) return [];
 
     students.forEach((s) => {
       s.password = undefined;

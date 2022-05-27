@@ -6,12 +6,25 @@ import mongoose from "mongoose";
 const testDatabase = new TestDatabase();
 describe("Teacher routes tests", () => {
   let token = "";
+  const studentMock = {
+    id: "",
+    name: "Mary Evans",
+    age: 12,
+    fone: "+55 35 998765654",
+    email: "maryEvans@email.com",
+    password: "mypass",
+    teacherIds: [],
+    modules: []
+  };
   const teacherMock = {
-    "id": "",
-    "name": "John Doe",
-    "email": "johnDoe@email.com",
-    "password": "mypass"
-  }
+    id: "",
+    name: "John Doe",
+    age: 34,
+  	fone: "+55 35 998765654",
+    email: "johnDoe@email.com",
+    password: "mypass",
+    studentIds: []
+  };
   
   beforeAll(async () => {
     await testDatabase.connect();
@@ -24,6 +37,19 @@ describe("Teacher routes tests", () => {
     });
     
     token = loginResponse.body.token;
+
+    await supertest(app)
+      .post("/student")
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send(studentMock);
+
+    const student = await supertest(app)
+      .get(`/studentByEmail?email=${studentMock.email}`)
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + token);
+
+    studentMock.id = student.body._id;
   });
 
   afterAll(async () => {
@@ -166,6 +192,18 @@ describe("Teacher routes tests", () => {
     expect(response.body._id).toBe(teacherMock.id);
     expect(response.body.name).toBe(teacherMock.name);
     expect(response.body.email).toBe(teacherMock.email);
+  });
+
+  it("Put a student", async () => {
+    const response = await supertest(app)
+      .put('/teacher/student')
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({studentId: studentMock.id, teacherId: teacherMock.id});
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("Message");
+    expect(response.body.Message).toBe("Student added");
   });
 
   it("Get students list", async () => {

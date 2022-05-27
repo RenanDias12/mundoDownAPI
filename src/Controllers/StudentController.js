@@ -80,7 +80,7 @@ class StudentController {
 
     try {
       const data = await studentService.getTeachersByStudentId(request.query.id);
-      if(data == 1) return response.status(404).json({ Message: "Student not found" });
+      
       return response.status(200).json(data);
     } catch (error) {
       return response.status(500).json({ Error: error.message });

@@ -9,16 +9,43 @@ describe("Student routes tests", () => {
   const studentMock = {
     id: "",
     name: "Mary Evans",
+    age: 12,
+    fone: "+55 35 998765654",
     email: "maryEvans@email.com",
     password: "mypass",
-    teacherId: "",
+    teacherIds: [],
+    modules: []
   };
   const teacherMock = {
     id: "",
     name: "John Doe",
+    age: 34,
+  	fone: "+55 35 998765654",
     email: "johnDoe@email.com",
     password: "mypass",
+    studentIds: []
   };
+  const moduleMock = {
+    name: "Saudações",
+    tasks: [
+			{
+				task: "Bom Dia!",
+				status: 1
+			},
+			{
+				task: "Boa Tarde!",
+				status: 1
+			},
+			{
+				task: "Boa Noite!",
+				status: 1
+			},
+			{
+				task: "Olá!",
+				status: 1
+			}
+		]
+  }
 
   beforeAll(async () => {
     await testDatabase.connect();
@@ -42,7 +69,6 @@ describe("Student routes tests", () => {
       .set("Authorization", "Bearer " + token);
 
     teacherMock.id = teacher.body._id;
-    studentMock.teacherId = teacher.body._id;
   });
 
   afterAll(async () => {
@@ -120,6 +146,26 @@ describe("Student routes tests", () => {
     expect(response.body.Error).toBe("Unprovided token");
   });
 
+  it("Put module - Without token", async () => {
+    const response = await supertest(app)
+      .put("/student/module")
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty("Error");
+    expect(response.body.Error).toBe("Unprovided token");
+  });
+
+  it("Link teacher - Without token", async () => {
+    const response = await supertest(app)
+      .put("/student/teacher")
+      .set("Accept", "application/json");
+
+    expect(response.status).toBe(401);
+    expect(response.body).toHaveProperty("Error");
+    expect(response.body.Error).toBe("Unprovided token");
+  });
+
   it("Create student", async () => {
     const response = await supertest(app)
       .post("/student")
@@ -185,6 +231,30 @@ describe("Student routes tests", () => {
     expect(response.body.email).toBe(studentMock.email);
   });
 
+  it("Put a module", async () => {
+    const response = await supertest(app)
+      .put('/student/module')
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({studentId: studentMock.id, module: moduleMock});
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("Message");
+    expect(response.body.Message).toBe("Module added");
+  });
+
+  it("Put a teacher", async () => {
+    const response = await supertest(app)
+      .put('/student/teacher')
+      .set("Accept", "application/json")
+      .set("Authorization", "Bearer " + token)
+      .send({studentId: studentMock.id, teacherId: teacherMock.id});
+
+    expect(response.status).toBe(200);
+    expect(response.body).toHaveProperty("Message");
+    expect(response.body.Message).toBe("Teacher added");
+  });
+
   it("Get my teacher", async () => {
     const response = await supertest(app)
       .get(`/myTeacher?id=${studentMock.id}`)
@@ -192,9 +262,10 @@ describe("Student routes tests", () => {
       .set("Authorization", "Bearer " + token);
 
     expect(response.status).toBe(200);
-    expect(response.body._id).toBe(teacherMock.id);
-    expect(response.body.name).toBe(teacherMock.name);
-    expect(response.body.email).toBe(teacherMock.email);
+    expect(response.body).toBeInstanceOf(Array);
+    expect(response.body[0]._id).toBe(teacherMock.id);
+    expect(response.body[0].name).toBe(teacherMock.name);
+    expect(response.body[0].email).toBe(teacherMock.email);
   });
 
   it("Update student password", async () => {

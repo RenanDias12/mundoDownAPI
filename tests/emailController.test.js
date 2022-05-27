@@ -27,7 +27,7 @@ describe("Teacher test", () => {
   it("Send email", async () => {
     const body = {
         "to": process.env.EMAIL_EXAMPLE,
-        "subject": "Email de Teste do Jest",
+        "subject": "Mary Evans concluiu o modulo Saudações",
         "text": "Aluno(a): Mary Evans,\nIdade: 8,\nAtividades: 15,\nAcertos: 15,\nDesempenho: 100%"
     }
     const response = await supertest(app)
